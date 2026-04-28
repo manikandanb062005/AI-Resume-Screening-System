@@ -7,6 +7,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from xgboost import XGBClassifier
 
 from app.services.cleaner import clean_text
+import os
+
+os.makedirs("models", exist_ok=True)
+
+
 
 
 df = pd.read_csv("src/resume_screening_dataset.csv")
