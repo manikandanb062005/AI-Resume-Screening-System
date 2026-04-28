@@ -18,7 +18,7 @@ def categorize_resume(text):
 
 def process_resumes(resumes, jd, model, vectorizer):
 
-    
+    # Remove duplicates
     seen = set()
     unique_resumes = []
     for r in resumes:
@@ -38,26 +38,36 @@ def process_resumes(resumes, jd, model, vectorizer):
 
     for i, resume in enumerate(cleaned_resumes):
 
-        
+        # Scores
         kw = keyword_score(resume, cleaned_jd) * 100
         ml = ml_scores[i] * 100
-        final = (ml * 0.5 + kw * 0.5)
+
+        # 🔥 Better weighting
+        final = (ml * 0.3 + kw * 0.7)
+
+        # Normalize
         final = min(final * 1.3, 97)
+
+        # Slight ranking variation
         final = final - (i * 0.2)
 
-        
-        if final >= 75:
-            status = "Selected"
-        elif final >= 55:
-            status = "Consider"
-        else:
-            status = "Rejected"
-
-        
-        role = categorize_resume(resume)
-
-        
+        # ✅ Get skills FIRST (FIXED)
         matching, missing = skill_gap_analysis(resume, cleaned_jd)
+
+        # 🚨 CRITICAL FIX: Reject if no matching skills
+        if len(matching) == 0:
+            final = final * 0.4
+            status = "Rejected"
+        else:
+            if final >= 75:
+                status = "Selected"
+            elif final >= 50:
+                status = "Consider"
+            else:
+                status = "Rejected"
+
+        # Other info
+        role = categorize_resume(resume)
         bias = detect_bias(resume)
         exp = extract_experience(resume)
 
@@ -76,8 +86,10 @@ def process_resumes(resumes, jd, model, vectorizer):
             "category": role
         })
 
+    # Sort by score
     results = sorted(results, key=lambda x: x["final_score"], reverse=True)
 
+    # Add ranking
     for idx, r in enumerate(results):
         r["rank"] = idx + 1
 
