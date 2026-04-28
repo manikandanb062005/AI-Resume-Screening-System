@@ -78,7 +78,6 @@ AI_Resume_Screening/
 ### 🔹 Backend Setup
 
 ```bash
-cd backend
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
@@ -92,6 +91,7 @@ uvicorn app.main:app --reload
 
 ```bash
 cd frontend
+cd ai_resume_screening
 npm install
 npm run dev
 ```
