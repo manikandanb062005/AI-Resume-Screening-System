@@ -79,6 +79,7 @@ AI_Resume_Screening/
 
 ```bash
 pip install -r requirements.txt
+python train.py
 uvicorn app.main:app --reload
 ```
 
