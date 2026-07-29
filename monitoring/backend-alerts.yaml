@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: backend-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring   # MUST match Helm release name, same reason as the ServiceMonitor
+spec:
+  groups:
+    - name: backend.rules
+      rules:
+        - alert: HighErrorRate
+          expr: |
+            (sum(rate(http_requests_total{job="backend", status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total{job="backend"}[5m]))) * 100 > 5
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Backend error rate is above 5%"
+            description: "The resume-screening backend has had an error rate above 5% for more than 1 minute. Current value: {{ $value | printf \"%.2f\" }}%"
+
+        - alert: BackendDown
+          expr: absent(up{job="backend"} == 1)
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Backend is down"
+            description: "Prometheus cannot reach the backend service for more than 1 minute."
