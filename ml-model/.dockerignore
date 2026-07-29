@@ -1,0 +1,16 @@
+venv/
+env/
+report_*.xlsx
+words/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+.gitignore
+.pytest_cache/
+*.egg-info/
+Readme.md
+README.md
+.env
+node_modules/

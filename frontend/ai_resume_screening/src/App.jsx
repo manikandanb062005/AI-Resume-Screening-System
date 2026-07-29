@@ -11,7 +11,7 @@ export default function App() {
 
   const handleDownload = async () => {
   try {
-    const res = await fetch("http://localhost:8000/download-report", {
+    const res = await fetch("/api/download-report", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

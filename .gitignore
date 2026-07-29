@@ -20,6 +20,7 @@ uploads/
 *.pdf
 *.docx
 *.txt
+!ml-model/requirements.txt
 
 *.xlsx
 .env
