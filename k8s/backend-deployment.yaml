@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: resume-backend:local
+          imagePullPolicy: IfNotPresent   # use the image already loaded into kind, don't try to pull from a registry
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          readinessProbe:
+            httpGet:
+              path: /docs
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /docs
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20

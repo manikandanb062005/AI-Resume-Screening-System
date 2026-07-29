@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend      # this name is what nginx.conf's proxy_pass http://backend:8000/ resolves to
+spec:
+  type: ClusterIP     # internal-only — the frontend reaches it, nothing external does directly
+  selector:
+    app: backend       # routes traffic to any Pod with this label — matches the Deployment above
+  ports:
+    - port: 8000
+      targetPort: 8000

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  type: NodePort       # exposes outside the cluster, via the node's port
+  selector:
+    app: frontend
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080    # must match the containerPort we mapped in kind-config.yaml
