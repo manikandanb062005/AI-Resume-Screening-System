@@ -1,0 +1,36 @@
+# Default configuration values for resume-screening-chart.
+# Override any of these at install time with: helm install ... --set backend.image.tag=v2
+# or by pointing to a different file: helm install ... -f values-production.yaml
+
+backend:
+  replicaCount: 1
+  image:
+    repository: resume-backend
+    tag: local
+    pullPolicy: IfNotPresent
+  port: 8000
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: resume-frontend
+    tag: local
+    pullPolicy: IfNotPresent
+  port: 80
+  service:
+    type: NodePort
+    nodePort: 30080
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
