@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-metrics
+  namespace: monitoring        # ServiceMonitors are conventionally kept alongside Prometheus itself
+  labels:
+    release: monitoring         # MUST match the Helm release name — this is how the Operator
+                                  # discovers this ServiceMonitor and picks it up automatically
+spec:
+  namespaceSelector:
+    matchNames:
+      - default                 # our backend Service lives in the "default" namespace
+  selector:
+    matchLabels:
+      app: backend               # matches the "backend" Service's label (app: backend)
+  endpoints:
+    - port: http                 # matches the "name: http" we set on the backend Service's port
+      path: /metrics
+      interval: 15s
