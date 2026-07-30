@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths:
       - 'ml-model/**'              # only run when backend code actually changes
-      - '.github/workflows/**'
+      - '.github/workflows/backend-ci.yml'
   pull_request:
     branches: [main]
     paths:
