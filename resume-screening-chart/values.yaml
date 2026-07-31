@@ -5,8 +5,8 @@
 backend:
   replicaCount: 1
   image:
-    repository: resume-backend
-    tag: local
+    repository: 048834208080.dkr.ecr.ap-south-1.amazonaws.com/resume-backend
+    tag: latest
     pullPolicy: IfNotPresent
   port: 8000
   resources:
@@ -20,8 +20,8 @@ backend:
 frontend:
   replicaCount: 1
   image:
-    repository: resume-frontend
-    tag: local
+    repository: 048834208080.dkr.ecr.ap-south-1.amazonaws.com/resume-frontend
+    tag: latest
     pullPolicy: IfNotPresent
   port: 80
   service:
