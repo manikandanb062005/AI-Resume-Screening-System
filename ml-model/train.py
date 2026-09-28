@@ -56,8 +56,7 @@ param_grid = {
 
 model = GridSearchCV(
     XGBClassifier(
-        eval_metric='logloss',
-        use_label_encoder=False
+        eval_metric='logloss'
     ),
     param_grid,
     cv=5,
