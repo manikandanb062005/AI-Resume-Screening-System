@@ -62,7 +62,7 @@ model = GridSearchCV(
     cv=5,
     scoring='f1',
     verbose=1,
-    n_jobs=-1
+    n_jobs=1
 )
 
 model.fit(X_train_vectorized, y_train)

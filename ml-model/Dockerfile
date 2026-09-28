@@ -23,16 +23,14 @@ RUN useradd --create-home appuser && chown appuser:appuser /app
 COPY --from=builder --chown=appuser:appuser /root/.local /home/appuser/.local
 ENV PATH=/home/appuser/.local/bin:$PATH
 
-# Copy application code, owned by appuser
+# Copy application code and pre-trained models, owned by appuser
 COPY --chown=appuser:appuser app/ ./app/
-COPY --chown=appuser:appuser train.py .
+COPY --chown=appuser:appuser models/ ./models/
 COPY --chown=appuser:appuser src/ ./src/
+COPY --chown=appuser:appuser train.py .
 
-# Train the model AT BUILD TIME — bakes model.pkl/vectorizer.pkl into the image
-# train.py itself creates ./models/ via os.makedirs("models", exist_ok=True)
-# Run as appuser so the resulting models/ folder is owned correctly too
 USER appuser
-RUN python train.py
+
 
 EXPOSE 8000
 
