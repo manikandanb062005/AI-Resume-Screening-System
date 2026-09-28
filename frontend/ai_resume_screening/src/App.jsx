@@ -3,37 +3,29 @@ import UploadForm from "./components/UploadForm";
 import ResultsGrid from "./components/ResultsGrid";
 import Dashboard from "./components/Dashboard";
 import Loader from "./components/Loader";
+import { downloadReport } from "./services/api";
 
 export default function App() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-
   const handleDownload = async () => {
-  try {
-    const res = await fetch("/api/download-report", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(results),
-    });
+    try {
+      const blob = await downloadReport(results);
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const a = document.createElement("a");
 
-    const blob = await res.blob();
+      a.href = url;
+      a.download = "AI_Resume_Report.xlsx";
+      a.click();
 
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      alert("Download failed!");
+    }
+  };
 
-    a.href = url;
-    a.download = "AI_Resume_Report.xlsx";
-    a.click();
-
-    window.URL.revokeObjectURL(url);
-  } catch (err) {
-    console.error(err);
-    alert("Download failed!");
-  }
-};
 
   return (
     <div className="container">
