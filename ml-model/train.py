@@ -48,28 +48,15 @@ X_test_vectorized = vectorizer.transform(X_test)
 
 
 
-param_grid = {
-    'n_estimators': [100, 200],
-    'max_depth': [4, 6],
-    'learning_rate': [0.05, 0.1]
-}
-
-model = GridSearchCV(
-    XGBClassifier(
-        eval_metric='logloss'
-    ),
-    param_grid,
-    cv=5,
-    scoring='f1',
-    verbose=1,
-    n_jobs=1
+model = XGBClassifier(
+    n_estimators=100,
+    max_depth=4,
+    learning_rate=0.1,
+    eval_metric='logloss'
 )
 
 model.fit(X_train_vectorized, y_train)
 
-print("Best parameters:", model.best_params_)
-
-model = model.best_estimator_
 
 
 y_pred = model.predict(X_test_vectorized)

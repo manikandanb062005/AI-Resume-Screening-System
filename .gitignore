@@ -11,10 +11,10 @@ env/
 
 
 *.log
-*.pkl
-*.joblib
-models/*.pkl
-models/*.joblib
+# models
+!ml-model/models/
+!ml-model/models/*.pkl
+
 
 uploads/
 *.pdf
